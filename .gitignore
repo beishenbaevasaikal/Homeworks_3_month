@@ -2,3 +2,5 @@
 __pychache__/
 venv
 .env
+db.sqlite3
+handlers/__pychache__/
