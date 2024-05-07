@@ -36,3 +36,8 @@ async def sake(message: types.Message, db=AsyncDatabase()):
             text=f'Hello admin {message.from_user.first_name}'
         )
         USERS = await db.execute_query(query=queries.SELECT_USER, fetch='all')
+
+        await bot.send_message(
+                chat_id=message.from_user.id,
+                text=f'{USERS}'
+            )
