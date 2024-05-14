@@ -27,13 +27,13 @@ async def random_profiles_call(call: types.CallbackQuery,
         random_profile = random.choice(profiles)
         print(profiles)
         print(random_profile)
-        photo = types.FSInputFile(random_profile['photo'])
+        photo = types.FSInputFile(random_profile['PHOTO'])
         await bot.send_photo(
             chat_id=call.from_user.id,
             photo=photo,
             caption=PROFILE_TEXT.format(
-                nickname=random_profile['nickname'],
-                bio=random_profile['bio'],
+                nickname=random_profile['NICKNAME'],
+                bio=random_profile['BIO'],
             ),
             reply_markup=await like_dislike_keyboard(tg_id=random_profile['TELEGRAM_ID'])
         )
@@ -62,7 +62,7 @@ async def like_detect_call(call: types.CallbackQuery,
 
     @router.callback_query(lambda call: 'dislike' in call.data)
     async def dislike_detect_call(call: types.CallbackQuery,
-                               db=AsyncDatabase()):
+                                  db=AsyncDatabase()):
         print(call.data.replace('dislike', ''))
 
         await db.execute_query(

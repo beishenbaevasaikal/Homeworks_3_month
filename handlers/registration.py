@@ -98,7 +98,7 @@ async def process_birthday(message: types.Message,
 
 @router.message(RegistrationStates.gender)
 async def process_gender(message: types.Message,
-                         state: FSMContext, db=db.AsyncDatabase()):
+                         state: FSMContext, db=db.AsyncDatabase):
     await state.update_data(gender=message.text)
 
     data = await state.get_data()
@@ -138,13 +138,3 @@ async def process_gender(message: types.Message,
             gender=data['gender']
         )
     )
-
-@router.callback_query(lambda call: call.data == 'profile')
-async def profile_callback(call: types.CallbackQuery, db=db.AsyncDatabase()):
-    data = await db.execute_query(query=queries.SELECT_PROFILE_TABLE_QUERY, params=(call.from_user.id,), fetch='all')
-    if data:
-        user = data[0]
-        photo = types.FSInputFile(user['PHOTO'])
-        await bot.send_photo(chat_id=call.from_user.id, photo=photo)
-    else:
-        await bot.send_message(chat_id=call.from_user.id, text="You don't have a profile")
