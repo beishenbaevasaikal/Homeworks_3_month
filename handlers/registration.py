@@ -24,6 +24,17 @@ async def registraion_start(call: types.CallbackQuery,
         text="Send me your Nickname,please!"
     )
     await state.set_state(RegistrationStates.nickname)
+
+@router.callback_query(lambda call: call.data == "update_profile")
+async def update_profile(call: types.callback_query,
+                         state: FSMContext):
+
+    await bot.send_message(
+        chat_id=call.from_user.id,
+        text="Send me your Nickname,please!"
+    )
+    await state.set_state(RegistrationStates.nickname)
+
 @router.message(RegistrationStates.nickname)
 async def process_nickname(message: types.Message,
                            state: FSMContext):
@@ -92,6 +103,31 @@ async def process_gender(message: types.Message,
 
     data = await state.get_data()
     photo = types.FSInputFile(data['photo'])
+    profile = await db.execute_query(
+        query=queries.SELECT_PROFILE_QUERY,
+        params=(
+            message.from_user.id,
+        ),
+        fetch='one'
+    )
+    if profile:
+        await db.execute_query(query=queries.UPDATE_PROFILE_QUERY, params=(
+        None, message.from_user.id, data['nickname'], data['bio'], data['photo'], data['birthday'], data['gender'],
+        message.from_user.id), fetch='none')
+
+        await bot.send_message(
+            chat_id=message.from_user.id,
+            text='You have re-registered successfully')
+
+    else:
+        await db.execute_query(query=queries.INSERT_PROFILE_TABLE_QUERY, params=(
+            None, message.from_user.id, data['nickname'], data['bio'], data['photo'], data['birthday'], data['gender'],
+            message.from_user.id), fetch='none')
+
+    await bot.send_message(
+        chat_id=message.from_user.id,
+        text='You have registered successfully')
+
     await bot.send_photo(
         chat_id=message.from_user.id,
         photo=photo,
@@ -100,17 +136,8 @@ async def process_gender(message: types.Message,
             bio=data['bio'],
             birthday=data['birthday'],
             gender=data['gender']
-        ))
-    try:
-        await db.execute_query(query=queries.INSERT_PROFILE_TABLE_QUERY, params=(None, message.from_user.id, data['nickname'], data['bio'], data['photo'], data['birthday'], data['gender']))
-    except Exception as e:
-        await bot.send_message(chat_id=message.from_user.id, text='You already registered')
-
-    await bot.send_message(
-        chat_id=message.from_user.id,
-        text="Congratulation, you have registered succesfully!"
+        )
     )
-
 
 @router.callback_query(lambda call: call.data == 'profile')
 async def profile_callback(call: types.CallbackQuery, db=db.AsyncDatabase()):

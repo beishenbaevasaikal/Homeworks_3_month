@@ -9,6 +9,7 @@ class AsyncDatabase:
     async def create_tables(self):
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute(queries.CREATE_PROFILE_TABLE_QUERY)
+            await db.execute(queries.CREATE_LIKE_DISLIKE_TABLE_QUERY)
 
             await db.commit()
             print("Database connected successfully")
@@ -24,3 +25,6 @@ class AsyncDatabase:
             elif fetch == "all":
                 data = await cursor.fetchall()
                 return [dict(row) for row in data] if data else []
+            elif fetch == "one":
+                data = await cursor.fetchone()
+                return dict(data) if data else None
