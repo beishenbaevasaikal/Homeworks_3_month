@@ -1,5 +1,7 @@
 from aiogram import Router
 from aiogram import types
+from aiogram.types import user
+
 from config import bot
 from const import PROFILE_TEXT
 from database import queries
@@ -16,7 +18,7 @@ async def random_profiles_call(call: types.CallbackQuery,
     profile = await db.execute_query(
         query=queries.SELECT_PROFILE_QUERY,
         params=(
-            call.from_user.id
+            call.from_user.id,
         ),
         fetch='one'
     )
@@ -32,5 +34,5 @@ async def random_profiles_call(call: types.CallbackQuery,
                 birthday=profile['BIRTHDAY'],
                 gender=profile['GENDER']
             ),
-            reply_markup= await my_profile_keyboard(call.from_user.id)
+            reply_markup=await my_profile_keyboard(call.from_user.id)
         )

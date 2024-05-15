@@ -47,12 +47,13 @@ async def random_profiles_call(call: types.CallbackQuery,
 @router.callback_query(lambda call: 'like_' in call.data)
 async def like_detect_call(call: types.CallbackQuery,
                            db=AsyncDatabase()):
-    print(call.data.replace('like_', ''))
+    owner=call.data.replace('like_', '')
 
     await db.execute_query(
         query=queries.INSERT_LIKE_QUERY,
         params=(
             None,
+            owner,
             call.from_user.id,
             1
         ),
@@ -65,12 +66,13 @@ async def like_detect_call(call: types.CallbackQuery,
     @router.callback_query(lambda call: 'dislike' in call.data)
     async def dislike_detect_call(call: types.CallbackQuery,
                                   db=AsyncDatabase()):
-        print(call.data.replace('dislike', ''))
+        owner=call.data.replace('dislike', '')
 
         await db.execute_query(
             query=queries.INSERT_DISLIKE_QUERY,
             params=(
                 None,
+                owner,
                 call.from_user.id,
                 0
             ),
