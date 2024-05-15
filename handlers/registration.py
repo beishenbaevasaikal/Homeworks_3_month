@@ -5,6 +5,7 @@ from const import PROFILE_TEXT
 from aiogram import Router, types
 from config import bot
 from database import db, queries
+from database.db import AsyncDatabase
 
 router = Router()
 
@@ -98,7 +99,7 @@ async def process_birthday(message: types.Message,
 
 @router.message(RegistrationStates.gender)
 async def process_gender(message: types.Message,
-                         state: FSMContext, db=db.AsyncDatabase):
+                         state: FSMContext, db=AsyncDatabase()):
     await state.update_data(gender=message.text)
 
     data = await state.get_data()
@@ -112,8 +113,8 @@ async def process_gender(message: types.Message,
     )
     if profile:
         await db.execute_query(query=queries.UPDATE_PROFILE_QUERY, params=(
-        None, message.from_user.id, data['nickname'], data['bio'], data['photo'], data['birthday'], data['gender'],
-        message.from_user.id), fetch='none')
+            data['nickname'], data['bio'], data['photo'], data['birthday'], data['gender'],
+            message.from_user.id), fetch='none')
 
         await bot.send_message(
             chat_id=message.from_user.id,
@@ -122,7 +123,7 @@ async def process_gender(message: types.Message,
     else:
         await db.execute_query(query=queries.INSERT_PROFILE_TABLE_QUERY, params=(
             None, message.from_user.id, data['nickname'], data['bio'], data['photo'], data['birthday'], data['gender'],
-            message.from_user.id), fetch='none')
+            ), fetch='none')
 
     await bot.send_message(
         chat_id=message.from_user.id,

@@ -16,7 +16,7 @@ async def random_profiles_call(call: types.CallbackQuery,
     if call.message.caption.startswith('Nickname'):
         await call.message.delete()
     profiles = await db.execute_query(
-        query=queries.SELECT_PROFILE_TABLE_QUERY,
+        query=queries.SELECT_ALL_PROFILES,
         params=(
             call.from_user.id,
             call.from_user.id,
@@ -34,6 +34,8 @@ async def random_profiles_call(call: types.CallbackQuery,
             caption=PROFILE_TEXT.format(
                 nickname=random_profile['NICKNAME'],
                 bio=random_profile['BIO'],
+                birthday=random_profile['BIRTHDAY'],
+                gender=random_profile['GENDER']
             ),
             reply_markup=await like_dislike_keyboard(tg_id=random_profile['TELEGRAM_ID'])
         )

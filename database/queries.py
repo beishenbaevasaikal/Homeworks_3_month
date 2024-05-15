@@ -47,7 +47,7 @@ UNIQUE (OWNER_TELEGRAM_ID, LIKER_TELEGRAM_ID)
 '''
 
 INSERT_LIKE_QUERY = '''
-INSERT INTO like_dislike VALUES (?, ?, ?, ?, ?)
+INSERT INTO like_dislike VALUES (?, ?, ?, ?)
 '''
 
 SELECT_PROFILE_QUERY = '''
@@ -55,5 +55,5 @@ SELECT * FROM profiles WHERE TELEGRAM_ID = ?
 '''
 
 UPDATE_PROFILE_QUERY = '''
-UPDATE profiles SET NICNAME = ?, BIO = ?, PHOTO = ?, BIRTHDAY = ?, GENDER = ? WHERE TELEGRAM_ID = ?
+UPDATE profiles SET NICKNAME = ?, BIO = ?, PHOTO = ?, BIRTHDAY = ?, GENDER = ? WHERE TELEGRAM_ID = ?
 '''

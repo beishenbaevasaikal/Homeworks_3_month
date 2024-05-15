@@ -12,11 +12,11 @@ router = Router()
 
 @router.callback_query(lambda call: call.data == 'my_profile')
 async def random_profiles_call(call: types.CallbackQuery,
-                               db: AsyncDatabase()):
+                               db=AsyncDatabase()):
     profile = await db.execute_query(
         query=queries.SELECT_PROFILE_QUERY,
         params=(
-            call.from_user.id,
+            call.from_user.id
         ),
         fetch='one'
     )
@@ -29,6 +29,8 @@ async def random_profiles_call(call: types.CallbackQuery,
             caption=PROFILE_TEXT.format(
                 nickname=profile['NICKNAME'],
                 bio=profile['BIO'],
+                birthday=profile['BIRTHDAY'],
+                gender=profile['GENDER']
             ),
-            reply_markup=await my_profile_keyboard()
+            reply_markup= await my_profile_keyboard(call.from_user.id)
         )
