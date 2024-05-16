@@ -21,12 +21,17 @@ async def start_menu_keyboard():
         callback_data="view_profiles"
     )
 
-
+    reference_button = InlineKeyboardButton(
+        text="Reference Menu",
+        callback_data="reference_menu"
+    )
     markup = InlineKeyboardMarkup(
         inline_keyboard=[
             [registration_button],
             [profiles_button],
             [my_profile_button],
+            [reference_button],
         ]
     )
+
     return markup

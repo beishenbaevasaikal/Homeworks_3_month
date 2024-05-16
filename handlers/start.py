@@ -11,12 +11,15 @@ router = Router()
 
 @router.message(Command('start'))
 async def start_menu(message: types.Message, db=AsyncDatabase()):
-    await db.execute_query(query=queries.INSERT_USER, params=(None, message.from_user.first_name, message.from_user.id))
+
+    print(message)
+
+    await db.execute_query(query=queries.INSERT_USER, params=(None, message.from_user.first_name, message.from_user.id, None, 0))
     await bot.send_message(
         chat_id=message.chat.id,
         text=f'Hello {message.from_user.first_name}'
     )
-    print(message)
+
 
     animation_file = types.FSInputFile(MEDIA_PATH + "RK67baKq9A79.gif")
     await bot.send_animation(
