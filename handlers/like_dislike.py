@@ -23,6 +23,7 @@ async def random_profiles_call(call: types.CallbackQuery,
         ),
         fetch='all'
     )
+
     if profiles:
         random_profile = random.choice(profiles)
         print(profiles)
@@ -47,7 +48,7 @@ async def random_profiles_call(call: types.CallbackQuery,
 @router.callback_query(lambda call: 'like_' in call.data)
 async def like_detect_call(call: types.CallbackQuery,
                            db=AsyncDatabase()):
-    owner=call.data.replace('like_', '')
+    owner = call.data.replace('like_', '')
 
     await db.execute_query(
         query=queries.INSERT_LIKE_QUERY,
