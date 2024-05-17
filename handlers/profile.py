@@ -13,7 +13,7 @@ router = Router()
 
 
 @router.callback_query(lambda call: call.data == 'my_profile')
-async def random_profiles_call(call: types.CallbackQuery,
+async def my_profile_call(call: types.CallbackQuery,
                                db=AsyncDatabase()):
     profile = await db.execute_query(
         query=queries.SELECT_PROFILE_QUERY,
@@ -35,4 +35,9 @@ async def random_profiles_call(call: types.CallbackQuery,
                 gender=profile['GENDER']
             ),
             reply_markup=await my_profile_keyboard(call.from_user.id)
+        )
+    else:
+        await bot.send_message(
+            chat_id=call.from_user.id,
+            text="You haven't registered"
         )

@@ -9,14 +9,21 @@ async def reference_menu_keyboard():
         callback_data=f"reference_link"
     )
 
-    # dislike_button = InlineKeyboardButton(
-    #     text="Dislike",
-    #     callback_data=f"dislike{tg_id}"
-    # )
+    balance_button = InlineKeyboardButton(
+        text="Balance",
+        callback_data='reference_balance'
+    )
+
+    references_list_button = InlineKeyboardButton(
+        text="References list",
+        callback_data='references_list'
+    )
 
     markup = InlineKeyboardMarkup(
         inline_keyboard=[
             [link_button],
+            [balance_button],
+            [references_list_button]
         ]
     )
 

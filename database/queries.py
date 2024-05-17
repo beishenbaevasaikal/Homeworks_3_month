@@ -4,9 +4,10 @@ first_name TEXT,
 tg_id INTEGER,
 UNIQUE(tg_id))'''
 
-INSERT_USER = '''INSERT OR IGNORE INTO telegramm_users VALUES (?, ?, ?)'''
+INSERT_USER = '''INSERT OR IGNORE INTO telegramm_users VALUES (?, ?, ?, ?, ?)'''
 
-SELECT_USER = '''SELECT * FROM telegramm_users'''
+SELECT_USER = '''SELECT * FROM telegramm_users WHERE TG_ID = ?'''
+
 CREATE_PROFILE_TABLE_QUERY = '''
 CREATE TABLE IF NOT EXISTS profiles
 (
@@ -82,9 +83,17 @@ INSERT INTO reference VALUES (?, ?, ?)
 '''
 
 UPDATE_USER_LINK_QUERY = '''
-UPDATE telegramm_users SET REFERENCE_LINK = ? WHERE TELEGRAM_ID = ?
+UPDATE telegramm_users SET REFERENCE_LINK = ? WHERE TG_ID = ?
 '''
 
 UPDATE_USER_BALANCE_QUERY = '''
-UPDATE telegramm_users SET BALANCE = COALESCE(BALANCE, 0) WHERE TELEGRAM_ID = ?
+UPDATE telegramm_users SET BALANCE = COALESCE(BALANCE, 0) + 100 WHERE TG_ID = ?
+'''
+
+SELECT_USEER_BY_LINK_QUERY = '''
+SELECT * FROM telegramm_users WHERE REFERENCE_LINK = ?
+'''
+SELECT_REFERENCES_LIST = '''
+SELECT * FROM references
+WHERE owner_telegram_id = ?
 '''

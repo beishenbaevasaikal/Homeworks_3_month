@@ -12,6 +12,7 @@ class AsyncDatabase:
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute(queries.CREATE_PROFILE_TABLE_QUERY)
             await db.execute(queries.CREATE_LIKE_DISLIKE_TABLE_QUERY)
+            await db.execute(queries.CREATE_TABLE_REFERENCE_QUERY)
 
 
             try:
