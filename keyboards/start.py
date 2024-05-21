@@ -36,6 +36,11 @@ async def start_menu_keyboard():
         callback_data="wallet_button"
     )
 
+    serials_button = InlineKeyboardButton(
+        text="Your serials",
+        callback_data="serials_button"
+    )
+
     markup = InlineKeyboardMarkup(
         inline_keyboard=[
             [registration_button],
@@ -44,6 +49,7 @@ async def start_menu_keyboard():
             [reference_button],
             [history_button],
             [wallet_button],
+            [serials_button],
         ]
     )
 

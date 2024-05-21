@@ -10,6 +10,7 @@ from aiogram.filters import Command
 from config import ADMIN_ID, MEDIA_PATH
 from config import bot
 from keyboards.start import start_menu_keyboard
+from scraper.news_scraper import SerialScraper
 
 router = Router()
 
@@ -105,4 +106,15 @@ async def sake(message: types.Message, db=AsyncDatabase()):
         await bot.send_message(
             chat_id=message.from_user.id,
             text="You haven't access!!!"
+        )
+
+@router.callback_query(lambda call: call.data == "serials")
+async def latest_serial_links(call: types.CallbackQuery,
+                               db=AsyncDatabase()):
+    scraper = SerialScraper()
+    data = scraper.scrape_data()
+    for serial in data:
+        await bot.send_message(
+            chat_id=call.message.chat.id,
+            text="https://serial-time.net/top/" + serial
         )
