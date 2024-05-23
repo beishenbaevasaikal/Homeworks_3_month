@@ -1,7 +1,7 @@
 import sqlite3
 
 from aiogram.utils.deep_linking import create_start_link
-
+import httpx
 from const import START_MENU_TEXT
 from database import queries
 from database.db import AsyncDatabase
@@ -10,6 +10,7 @@ from aiogram.filters import Command
 from config import ADMIN_ID, MEDIA_PATH
 from config import bot
 from keyboards.start import start_menu_keyboard
+from scraper.async_news import AsyncSerialScraper
 from scraper.news_scraper import SerialScraper
 
 router = Router()
@@ -111,7 +112,7 @@ async def sake(message: types.Message, db=AsyncDatabase()):
 @router.callback_query(lambda call: call.data == "serials")
 async def latest_serial_links(call: types.CallbackQuery,
                                db=AsyncDatabase()):
-    scraper = SerialScraper()
+    scraper = AsyncSerialScraper()
     data = scraper.scrape_data()
     for serial in data:
         await bot.send_message(
