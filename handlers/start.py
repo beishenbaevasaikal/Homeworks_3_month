@@ -108,14 +108,14 @@ async def sake(message: types.Message, db=AsyncDatabase()):
             chat_id=message.from_user.id,
             text="You haven't access!!!"
         )
-
-@router.callback_query(lambda call: call.data == "serials")
-async def latest_serial_links(call: types.CallbackQuery,
-                               db=AsyncDatabase()):
-    scraper = AsyncSerialScraper()
-    data = scraper.scrape_data()
-    for serial in data:
-        await bot.send_message(
-            chat_id=call.message.chat.id,
-            text="https://serial-time.net/top/" + serial
-        )
+#
+# @router.callback_query(lambda call: call.data == "serials")
+# async def latest_serial_links(call: types.CallbackQuery,
+#                                db=AsyncDatabase()):
+#     scraper = AsyncSerialScraper()
+#     data = scraper.scrape_data()
+#     for serial in data:
+#         await bot.send_message(
+#             chat_id=call.message.chat.id,
+#             text="https://serial-time.net/top/" + serial
+#         )
