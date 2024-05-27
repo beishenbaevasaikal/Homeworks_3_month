@@ -10,8 +10,8 @@ from aiogram.filters import Command
 from config import ADMIN_ID, MEDIA_PATH
 from config import bot
 from keyboards.start import start_menu_keyboard
-from scraper.async_news import AsyncSerialScraper
-from scraper.news_scraper import SerialScraper
+# from scraper.async_news import AsyncSerialScraper
+# from scraper.news_scraper import SerialScraper
 
 router = Router()
 
